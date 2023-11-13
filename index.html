@@ -5,7 +5,7 @@
         <meta name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
-        <title>Dashboard</title>
+        <title>EcuaDashboard</title>
 
         <!-- Font Awesome -->
         <link
@@ -55,6 +55,70 @@
             </nav>
             <!-- Navbar -->
         </header>
+        <section class="p-4 text-right bg-light">
+            <div class="d-flex align-items-center justify-content-center">
+                <h3 id="coordenadas" class="mb-3 mt-3">Seleccione una ciudad</h3>
+            </div>
+            <!-- AQUI SERÁ EL MENU PARA BUSCAR LA CIUDAD-->
+            <div class="container">
+                <div
+                    class="row justify-content-end row-cols-6 row-cols-md-6 g-3 mt-2">
+
+                    <div class="col">
+                        <select id="opcionesCiudades" class="form-select form-select-lg mb-3"
+                            aria-label="Default select example">
+                            <option selected>Ciudades</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-3 g-3 mt-2">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Elevación</h5>
+                                <p class="card-text">
+                                    <!-- Esto se podria cambiar, con una card e icono correspondiente-->
+                                    <ul class="list-group list-group-light" >
+                                        <li id="elevacion" class="list-group-item">ND</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Latitud</h5>
+                                <p class="card-text">
+                                    <ul class="list-group list-group-light" >
+                                        <li id="latitud" class="list-group-item">ND</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Longitud</h5>
+                                <p class="card-text">
+                                    <ul class="list-group list-group-light" >
+                                        <li id="longitud" class="list-group-item">ND</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
 
         <!-- Indicadores -->
         <section class="p-4 text-right bg-light">
@@ -67,12 +131,12 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Precipitación</h5>
+                                <h5 class="card-title">Humedad</h5>
                                 <p class="card-text">
                                     <ul class="list-group list-group-light">
-                                        <li id="precipitacionMinValue" class="list-group-item">Min 0.0 [mm]</li>
-                                        <li id="precipitacionPromValue" class="list-group-item">Prom 0.0 [mm]</li>
-                                        <li id="precipitacionMaxValue" class="list-group-item">Max 0.0 [mm]</li>
+                                        <li id="precipitacionMinValue" class="list-group-item">Min 0.0 [%]</li>
+                                        <li id="precipitacionPromValue" class="list-group-item">Prom 0.0 [%]</li>
+                                        <li id="precipitacionMaxValue" class="list-group-item">Max 0.0 [%]</li>
                                       </ul>  
                                 </p>
                             </div>
@@ -116,19 +180,74 @@
             <h4 id="graficos" class="mb-3">
                 Gráficos
             </h4>
-            <div class="container">
-                <div
-                    class="row d-flex justify-content-center row-cols-1 row-cols-md-1 g-4 mt-2">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="container">
                     <div class="col">
-                        <canvas id="plot1"></canvas>
+                         <div class="card mb-4">
+                             <div class="card-header">
+                                 <i class="fa-brands fa-hotjar chartIcon"></i>
+                                 Temperatura por hora [°C]
+                             </div>
+                             <div class="card-body">
+                                 <canvas id="plot1"></canvas>
+                             </div>
+                         </div>
                     </div>
+     
                     <div class="col">
-                        <canvas id="plot2"></canvas>
+                     <div class="card mb-4">
+                         <div class="card-header">
+                            <i class="fa-solid fa-sun chartIcon"></i>
+                            Índice de Rayos Ultravioletas
+                         </div>
+                         <div class="card-body">
+                             <canvas id="plot2"></canvas>
+                         </div>
+                     </div>
+                </div>
+            </div>
+            
+            </div>
+        </section>
+        <!-- Gráficos -->
+
+          <!-- Datos -->
+        <section class="p-4 text-right bg-light">
+            <h4 id="datos" class="mb-3">
+                Datos
+            </h4>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-1 g-3 mt-2">
+                    <div class="col">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Pronóstico del tiempo
+                                    para 5 días con datos cada 3 horas por
+                                    ciudad</h5>
+                                <table id="forecast"
+                                    class="table align-middle mb-0 bg-white">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Hora</th>
+                                            <th>Humedad [%]</th>
+                                            <th>Velocidad del viento [m/s]</th>
+                                            <th>Precipitación [--]</th>
+                                            <th>Presión [hPa]</th>
+                                            <th>Nubosidad [%]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="forecastbody">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Gráficos -->
+        <!-- Datos -->
 
 
         <!-- MDB -->
