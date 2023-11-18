@@ -14,6 +14,18 @@
     font-weight: bold;
 }
 
+.card-header{
+    background-color: #1C4E80;
+}
+
+.emote{
+    color: #fff;
+}
+
+.cabeceraCard{
+    color: #fff;
+}
+
 table.default tr:not(:nth-child(1)):not(:nth-child(2)) {
     display: none;
 }
