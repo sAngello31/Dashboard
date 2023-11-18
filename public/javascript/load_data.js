@@ -1,12 +1,26 @@
 import {ciudadesEcuador} from './static_data.js';
+import {validarChart, makeBarChart, makeLineChart} from './makeCharts.js';
 
 let fechaActual = () => new Date().toISOString().slice(0,10);
 let tiempoArr = [];
-let chart1 = null;
-let chart2 = null
-let arrChart = [chart1, chart2];
 
-// Aqui inicia los promedios y gráficos
+(function (){
+    let menu = document.getElementById("opcionesCiudades");
+    for(let clave in ciudadesEcuador){
+        let option = document.createElement("option");
+        option.textContent = clave;
+        option.value = clave;
+        menu.appendChild(option);
+    }
+})();
+
+(function(){
+    let coleccionHTML = document.getElementsByTagName("h6");
+    let tituloH6 = coleccionHTML[0];
+    tituloH6.textContent = fechaActual();
+})();
+
+
 let filtrar = (arregloDatos) => {
     let datos = [];
     let fecha = fechaActual();
@@ -30,68 +44,17 @@ let sacarPromedios = (arrDatos) => {
     return datos;
 }
 
-let validarChart = () => {
-    for(let i in arrChart){
-        if(arrChart[i] != null){
-            arrChart[i].destroy();
-        }
-    }
-}
+let cargarPromedios = (arrJSONDatos, clase, unidad) =>{
+    let datos = filtrar(arrJSONDatos);
+    let mediciones = sacarPromedios(datos);
 
-let llenarCiudades = () =>{
-    let menu = document.getElementById("opcionesCiudades");
-    for(let clave in ciudadesEcuador){
-        let option = document.createElement("option");
-        option.textContent = clave;
-        option.value = clave;
-        menu.appendChild(option);
-    }
-}
+    let minValue = document.getElementById(`${clase}MinValue`);
+    let promValue = document.getElementById(`${clase}PromValue`);
+    let maxValue = document.getElementById(`${clase}MaxValue`);
 
-
-let cargarFechaActual = () => {
-    let coleccionHTML = document.getElementsByTagName("h6");
-    let tituloH6 = coleccionHTML[0];
-    tituloH6.textContent = fechaActual();
-}
-
-let makeChart = (data) => {
-        let plotRef = document.getElementById("plot1");
-        let plotRef2 = document.getElementById("plot2");
-        let config1 = {
-            type: 'line',
-            data: {
-              labels: data.hourly.time, 
-              datasets: [
-                {
-                  label: 'Temperature [2m]',
-                  data: data.hourly.temperature_2m, 
-                }
-              ]
-            },
-            options: {
-                responsive: true
-            }
-        };
-
-        let config2 = {
-            type: 'bar',
-            data: {
-              labels: data.daily.time, 
-              datasets: [
-                {
-                  label: 'Índices UV Semanales',
-                  data: data.daily.uv_index_max, 
-                }
-              ]
-            },
-            options: {
-                responsive: true
-            }
-        }
-
-        arrChart[0]  = new Chart(plotRef, config1);
-        arrChart[1] = new Chart(plotRef2, config2);
+    minValue.textContent = `Min: ${mediciones[0]} ${unidad}`
+    promValue.textContent = `Prom: ${Math.round(mediciones[1]*100) /100} ${unidad}`
+    maxValue.textContent = `Max: ${mediciones[2]} ${unidad}`
 }
 
 let cargarOpenMeteor = (urlCiudad) => {
@@ -106,59 +69,36 @@ let cargarOpenMeteor = (urlCiudad) => {
         latitud.textContent = responseJSON.latitude;
         longitud.textContent = responseJSON.longitude;
 
-
-        makeChart(responseJSON);
         tiempoArr = responseJSON.hourly.time
-        cargarTemperatura(responseJSON.hourly.temperature_2m);
-        cargarViento(responseJSON.hourly.wind_speed_10m);
-        cargarPrecipitacion(responseJSON.hourly.relative_humidity_2m);
+        makeLineChart(
+            responseJSON.hourly.temperature_2m,
+            0,
+            "plot1",
+            tiempoArr,
+            "Temperature [2m]"
+        );
+        makeLineChart(
+            responseJSON.hourly.wind_speed_10m,
+            2,
+            "plot3",
+            tiempoArr,
+            "Velocidad del Viento"
+        );
+        makeBarChart(
+            responseJSON.daily.uv_index_max,
+            1,
+            "plot2",
+            responseJSON.daily.time,
+            "Indice de Rayos UV"
+        );
+
+        
+        cargarPromedios(responseJSON.hourly.temperature_2m, "temperatura", "[°C]");
+        cargarPromedios(responseJSON.hourly.wind_speed_10m, "viento", "[km/h]");
+        cargarPromedios(responseJSON.hourly.relative_humidity_2m, "humedad", "[%]")
         
     }).catch(console.error);
 }
-
-//Ahora precipitacion es para referirse a humedad xd
-let cargarPrecipitacion = (arrJSONDatos) => {
-    let datosPrecipitaciones = filtrar(arrJSONDatos);
-    let mediciones = sacarPromedios(datosPrecipitaciones);
-
-    let precipitacionMinValue = document.getElementById("precipitacionMinValue");
-    let precipitacionPromValue = document.getElementById("precipitacionPromValue");
-    let precipitacionMaxValue = document.getElementById("precipitacionMaxValue");
-
-    precipitacionMinValue.textContent = `Min ${mediciones[0]} [%]`;
-    precipitacionPromValue.textContent = `Prom ${Math.round(mediciones[1]*100) / 100} [%]`;
-    precipitacionMaxValue.textContent = `Max ${mediciones[2]} [%]`;
-}
-
-let cargarViento = (arrJSONDatos) => {
-    let datosUV = filtrar(arrJSONDatos);
-    let mediciones = sacarPromedios(datosUV);
-
-    let uvMinValue = document.getElementById("uvMinValue");
-    let uvPromValue = document.getElementById("uvPromValue");
-    let uvMaxValue = document.getElementById("uvMaxValue");
-
-    uvMinValue.textContent = `Min ${mediciones[0]} [km/h]`;
-    uvPromValue.textContent = `Prom ${Math.round(mediciones[1]*100) / 100} [km/h]`;
-    uvMaxValue.textContent = `Max ${mediciones[2]} [km/h]`;
-}
-
-let cargarTemperatura = (arrJSONDatos) => {
-    let datosTemp = filtrar(arrJSONDatos);
-    let mediciones = sacarPromedios(datosTemp);
-
-    let temperaturaMinValue = document.getElementById("temperaturaMinValue");
-    let temperaturaPromValue = document.getElementById("temperaturaPromValue");
-    let temperaturaMaxValue = document.getElementById("temperaturaMaxValue");
-
-    temperaturaMinValue.textContent = `Min ${mediciones[0]} [°C]`;
-    temperaturaPromValue.textContent = `Prom ${Math.round(mediciones[1]*100) / 100} [°C]`;
-    temperaturaMaxValue.textContent =  `Max ${mediciones[2]} [°C]`;
-}
-
-
-
-//Aqui acaba los promedioss
 
 let parseXML = (responseText) => {
   
@@ -168,8 +108,6 @@ let parseXML = (responseText) => {
 
     let forecastElement = document.querySelector("#forecastbody")
     let ciudad = document.getElementById("coordenadas");
-    
-
     forecastElement.innerHTML = ''
 
     // Procesamiento de los elementos con etiqueta `<time>` del objeto xml
@@ -229,14 +167,41 @@ let selectListener = async (event) => {
     }
 }
 
-let loadForecastByCity = () => {
-    //Handling event
-    let selectElement = document.querySelector("select");
-    selectElement.addEventListener("change", selectListener);
-  
+
+let renderExternalTable = (text) => {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "text/html");
+        let elemento = xml.querySelector("#postcontent table");
+        let elementoDOM = document.getElementById("monitoreo");
+        elementoDOM.innerHTML = elemento.outerHTML;
 }
 
-llenarCiudades();
-cargarFechaActual();
-loadForecastByCity();
+(function (){
+    let selectElement = document.querySelector("select");
+    selectElement.addEventListener("change", selectListener);
+})();
+
+(async function() {
+    let corseStorage = localStorage.getItem("corseItems");
+    if(corseStorage == null){
+        try{
+        
+            let proxyURL = 'https://cors-anywhere.herokuapp.com/'
+            let endpoint = proxyURL + 'https://www.gestionderiesgos.gob.ec/monitoreo-de-inundaciones/'
+    
+            let response = await fetch(endpoint);
+            let responseText = await response.text();
+
+            localStorage.setItem("corseItems", responseText);
+            renderExternalTable(responseText);
+            
+        } catch(error){
+            console.log(error);
+        }
+    }else{
+        renderExternalTable(corseStorage);
+    }
+    
+})();
+
 

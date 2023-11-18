@@ -19,13 +19,15 @@
         <link
             href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
             rel="stylesheet" />
+        
+        <link rel="stylesheet" href="styles/styles.css">
 
     </head>
     <body>
 
         <header>
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <nav class="navbar navbar-expand-lg navbar-light bgColor">
                 <div class="container-fluid">
                     <button
                         class="navbar-toggler"
@@ -77,11 +79,12 @@
             <div class="container">
                 <div class="row row-cols-1 row-cols-md-3 g-3 mt-2">
                     <div class="col">
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card shadow mb-1">
+                            <div class="card-header">
                                 <h5 class="card-title">Elevación</h5>
+                            </div>
+                            <div class="card-body">
                                 <p class="card-text">
-                                    <!-- Esto se podria cambiar, con una card e icono correspondiente-->
                                     <ul class="list-group list-group-light" >
                                         <li id="elevacion" class="list-group-item">ND</li>
                                     </ul>
@@ -91,9 +94,11 @@
                     </div>
 
                     <div class="col">
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card shadow mb-1">
+                            <div class="card-header">
                                 <h5 class="card-title">Latitud</h5>
+                            </div>
+                            <div class="card-body">
                                 <p class="card-text">
                                     <ul class="list-group list-group-light" >
                                         <li id="latitud" class="list-group-item">ND</li>
@@ -104,9 +109,11 @@
                     </div>
 
                     <div class="col">
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card shadow mb-1">
+                            <div class="card-header">
                                 <h5 class="card-title">Longitud</h5>
+                            </div>
+                            <div class="card-body">
                                 <p class="card-text">
                                     <ul class="list-group list-group-light" >
                                         <li id="longitud" class="list-group-item">ND</li>
@@ -129,35 +136,35 @@
             <div class="container">
                 <div class="row row-cols-1 row-cols-md-3 g-3 mt-2">
                     <div class="col">
-                        <div class="card">
+                        <div class="card shadow ">
                             <div class="card-body">
                                 <h5 class="card-title">Humedad</h5>
                                 <p class="card-text">
                                     <ul class="list-group list-group-light">
-                                        <li id="precipitacionMinValue" class="list-group-item">Min 0.0 [%]</li>
-                                        <li id="precipitacionPromValue" class="list-group-item">Prom 0.0 [%]</li>
-                                        <li id="precipitacionMaxValue" class="list-group-item">Max 0.0 [%]</li>
+                                        <li id="humedadMinValue" class="list-group-item">Min 0.0 [%]</li>
+                                        <li id="humedadPromValue" class="list-group-item">Prom 0.0 [%]</li>
+                                        <li id="humedadMaxValue" class="list-group-item">Max 0.0 [%]</li>
                                       </ul>  
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card">
+                        <div class="card shadow ">
                             <div class="card-body">
                                 <h5 class="card-title">Velocidad del Viento</h5>
                                 <p class="card-text">
                                     <ul class="list-group list-group-light">
-                                        <li id="uvMinValue" class="list-group-item">Min 0.0 [--]</li>
-                                        <li id="uvPromValue" class="list-group-item">Prom 0.0 [--]</li>
-                                        <li id="uvMaxValue" class="list-group-item">Max 0.0 [--]</li>
+                                        <li id="vientoMinValue" class="list-group-item">Min 0.0 [--]</li>
+                                        <li id="vientoPromValue" class="list-group-item">Prom 0.0 [--]</li>
+                                        <li id="vientoMaxValue" class="list-group-item">Max 0.0 [--]</li>
                                       </ul>  
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card">
+                        <div class="card shadow ">
                             <div class="card-body">
                                 <h5 class="card-title">Temperatura</h5>
                                 <p class="card-text">
@@ -180,33 +187,65 @@
             <h4 id="graficos" class="mb-3">
                 Gráficos
             </h4>
-            <div class="d-flex align-items-center justify-content-center">
-                <div class="container">
-                    <div class="col">
-                         <div class="card mb-4">
-                             <div class="card-header">
-                                 <i class="fa-brands fa-hotjar chartIcon"></i>
-                                 Temperatura por hora [°C]
-                             </div>
-                             <div class="card-body">
-                                 <canvas id="plot1"></canvas>
-                             </div>
-                         </div>
+
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-2 g-2 mt-2">
+                    
+                    <div class="col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fa-brands fa-hotjar chartIcon"></i>
+                                    </div>
+                                    <div class="col mt-2">
+                                        <h6 class="font-weight-bold text-primary">Temperatura por hora [°C]</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="plot1"></canvas>
+                            </div>
+                        </div>
                     </div>
-     
-                    <div class="col">
-                     <div class="card mb-4">
-                         <div class="card-header">
-                            <i class="fa-solid fa-sun chartIcon"></i>
-                            Índice de Rayos Ultravioletas
-                         </div>
-                         <div class="card-body">
-                             <canvas id="plot2"></canvas>
-                         </div>
-                     </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-sun chartIcon"></i>
+                                    </div>
+                                    <div class="col mt-2">
+                                        <h6 class="font-weight-bold text-primary">Índice de Rayos Ultravioletas</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="plot2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-wind icon"></i>
+                                    </div>
+                                    <div class="col mt-2">
+                                        <h6 class="font-weight-bold text-primary">Velocidad del Viento [km/h]</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="plot3"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
             </div>
         </section>
         <!-- Gráficos -->
@@ -248,6 +287,26 @@
             </div>
         </section>
         <!-- Datos -->
+
+        <!-- Tabla de mareas -->
+        <section class="p-4 text-right bg-light">
+            <h4 class="mb-3">
+                Mapa de monitoreo de amenaza de inundaciones bajo pronóstico de precipitaciones
+            </h4>
+            <p class="mb-2">Para acceder a la tabla, deberá pedir permiso en el siguiente <a href="https://cors-anywhere.herokuapp.com/corsdemo">link</a></p>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-1 g-3 mt-2">
+                    <div class="col">
+                        <div class="card">
+                            <div id="monitoreo" class="card-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Tabla de mareas -->
 
 
         <!-- MDB -->
