@@ -1,3 +1,6 @@
+.titleDashboard{
+    color: aliceblue;
+}
 
 .bgColor{
     background-color: #1C4E80;
@@ -9,6 +12,10 @@
 
 #navbarExample01 a:hover{
     font-weight: bold;
+}
+
+.card-header{
+    
 }
 
 table.default tr:not(:nth-child(1)):not(:nth-child(2)) {
