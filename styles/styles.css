@@ -14,9 +14,6 @@
     font-weight: bold;
 }
 
-.card-header{
-    
-}
 
 table.default tr:not(:nth-child(1)):not(:nth-child(2)) {
     display: none;
